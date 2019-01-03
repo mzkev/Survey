@@ -10,9 +10,7 @@
       <p>2) Not Quite Me</p>
       <p>3) Yes this is me</p>
     </div>
-    <div>
-      <form>
-        <div class="borders">
+    <!-- <div class="borders">
           <div v-bind:class="{ color1: this.score1 == '' && this.attempt != 0 }">
             <h4>1.</h4>
             {{questions.questions[0]}}
@@ -80,19 +78,25 @@
           <label for="sc52">2</label>
           <input id="sc53" type="radio" v-model="score5" name="score5" value="3">
           <label for="sc53">3</label>
-        </div>
-        <!-- <ul v-for="(list, index) in questions.questions" :key="index">
-        <li>
-          <div>{{index + 1}}</div>
-          {{list[0]}}
-        </li>
-        <label>
-          <input type="radio" v-model="score" name="score" value="1">
-          1
-        </label>
-        </ul>-->
+    </div>-->
+    <div>
+      <form @submit.prevent="validateForm">
+        <ul v-for="(list, index) in questions.questions" :key="index">
+          <li>
+            <div>{{index + 1}}</div>
+            <span v-bind:class="{ color1:  score[index] == '' && this.attempt != 0 }">{{list}}</span>
+          </li>
+          <input id="sc1" type="radio" v-model="score[index]" :name="'score' + index" value="1">
+          <label for="sc1">1</label>
+
+          <input id="sc2" type="radio" v-model="score[index]" :name="'score' + index" value="2">
+          <label for="sc2">2</label>
+
+          <input id="sc3" type="radio" v-model="score[index]" :name="'score' + index" value="3">
+          <label for="sc3">3</label>
+        </ul>
         <!-- <router-link v-if="score !== null" to="/successful" tag="button">Submit</router-link> -->
-        <input class="start" type="submit" @click.prevent="validateForm">
+        <input class="start" type="submit">
       </form>
     </div>
   </div>
@@ -103,12 +107,8 @@ export default {
   name: "Questions",
   data() {
     return {
-      score1: "",
+      score: [],
       attempt: 0,
-      score2: "",
-      score3: "",
-      score4: "",
-      score5: "",
       questions: [],
       tok:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiMDAwMDAwMDMiLCJpYXQiOjE1MzM2NDQwOTMsImV4cCI6MTU2NTA5MzY5M30.oMv_mQN6mAAmAVrRAozC7Ytk3omAye9P_TQ8Xyg3VOE"
@@ -127,13 +127,7 @@ export default {
     },
     validateForm: function() {
       console.log("Runing thissss");
-      if (
-        this.score1 == "" ||
-        this.score2 == "" ||
-        this.score3 == "" ||
-        this.score4 == "" ||
-        this.score5 == ""
-      ) {
+      if (this.score.length != this.questions.questions.length) {
         this.attempt++;
         alert("Please answer all the questions");
       } else {
